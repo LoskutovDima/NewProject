@@ -60,15 +60,14 @@ public class TestNewProject extends BasePageTest {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
         driver = new ChromeDriver(options);
-        /*driver.get("https://otus.ru/");
+        driver.get("https://otus.ru/");
         logger.info("Главная страница онлайн-обучения Отус успешно загружена");
         HomePage navigate = new HomePage(driver);
-        navigate.clickToCalendar();*/
-        driver.get("https://otus.ru/events/near/open_doors/");
+        navigate.clickToCalendar();
         logger.info("Страница с календарем мероприятий успешно загружена");
         CalendarOfEventsPage pageEvents = new CalendarOfEventsPage(driver);
-        //pageEvents.enterFilter();
-        pageEvents.scrollTo();
+        pageEvents.enterFilter();
+        pageEvents.scrollToFooter();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         logger.info("Установлен фильтр 'День открытых дверей'");
         List<String> resultOfDod = pageEvents.getListOfDod();
@@ -85,14 +84,16 @@ public class TestNewProject extends BasePageTest {
         driver.get("https://otus.ru/");
         logger.info("Главная страница онлайн-обучения Отус успешно загружена");
         HomePage pageEvents = new HomePage(driver);
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(2));
         pageEvents.clickToCalendar();
         CalendarOfEventsPage pageOfCalendarEvents = new CalendarOfEventsPage(driver);
-
+        //pageOfCalendarEvents.scrollToFooter();
         pageOfCalendarEvents.getDateOfCard();
         List<Instant> actualDates = pageOfCalendarEvents.getDateOfCard();
         Instant date = Instant.now();
+        System.out.println(date);
         for( Instant item: actualDates){
-            Assert.assertTrue("Одна из дат",item.isAfter(date));
+            Assert.assertTrue(item.isAfter(date));
         };
 
 

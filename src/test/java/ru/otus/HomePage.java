@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.time.Duration;
+
 public class HomePage extends BasePageTest {
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -26,6 +28,7 @@ public class HomePage extends BasePageTest {
     // Метод открытия страницы предстоящих событий
     public void clickToCalendar() {
         driver.findElement(buttDevelopments).click();
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(3));
         driver.findElement(calendar).click();
     }
 

@@ -3,10 +3,9 @@ package ru.otus;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 
@@ -18,7 +17,7 @@ public class CourseCards   {
         this.driver = driver;
     }
     private By duration = By.xpath("//p[@class='course-header2-bottom__item-text']");
-    private By nameOfCourses = By.xpath("//h1[@class='course-header2__title']");
+    private By nameOfCourses = By.xpath("//div[@class='course-header2__title']");
 
     public void chekingCardOfCourse (){
         List<WebElement> listOfElements = driver.findElements(duration);

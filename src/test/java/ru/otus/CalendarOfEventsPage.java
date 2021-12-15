@@ -1,10 +1,7 @@
 package ru.otus;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
 
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -21,7 +18,7 @@ public class CalendarOfEventsPage {
     // даты событий
     private By dateEvents = By.xpath("//div[@class='dod_new-event__time']");
     // кнопка в списке фильтров : "День открытых дверей"
-    private By dod = By.xpath("//div[@class='dod_new-events-dropdown__list js-dod_new_events-dropdown']/*[3]");
+    private By dod = By.xpath("/html/body/div[1]/div/div[2]/div/section/header/div[1]/div/div[2]/a[3]");
     // список событий по фильтру "День открытых дверей"
     private By listDod = By.xpath("//div[text()='День открытых дверей']");
     // footer
@@ -32,7 +29,7 @@ public class CalendarOfEventsPage {
     public void enterFilter() {
         driver.findElement(closeBanner).click();
         driver.findElement(sortingEvents).click();
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(2));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(3));
         driver.findElement(dod).click();
 
     }
@@ -40,11 +37,7 @@ public class CalendarOfEventsPage {
     public  void scrollToFooter() {
         JavascriptExecutor jse = ((JavascriptExecutor) driver);
         jse.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void ListOfEvents() {
@@ -62,23 +55,20 @@ public class CalendarOfEventsPage {
     }
 
     // Метод по получению дат из карточек предстоящих событий
-    public List<Instant> getDateOfCard() {
+    public List<LocalDateTime> getDateOfCard() {
         List<String> listDateOfEvents = new ArrayList<>();
         List<WebElement> listDateOfElement = driver.findElements(dateEvents);
-        for (int i = 0; i < listDateOfElement.size(); i++) {
-            //System.out.println(listDateOfElement.get(i).getText());
-            listDateOfEvents.add(listDateOfElement.get(i).getText());
+        for (WebElement webElement : listDateOfElement) {
+            listDateOfEvents.add(webElement.getText());
         }
-        Instant localDate;
-        List<Instant> listOfDates = new ArrayList<>();
-        for (int i =0; i < listDateOfEvents.size(); i++){
-            listOfDates.add(localDate = LocalDate.parse(listDateOfEvents.get(i) + " " + Calendar.getInstance ().get(Calendar.YEAR),
-                    DateTimeFormatter.ofPattern("d MMMM HH:mm yyyy", new Locale("ru"))).
-                    atStartOfDay().atZone(ZoneId.of("Europe/Moscow")).toInstant());
-            System.out.println(listOfDates);
+        List<LocalDateTime> listOfDates = new ArrayList<>();
+        for (String listDateOfEvent : listDateOfEvents) {
+            listOfDates.add(LocalDateTime.parse(listDateOfEvent + " " + Calendar.getInstance().get(Calendar.YEAR),
+                    DateTimeFormatter.ofPattern("d MMMM HH:mm yyyy", new Locale("ru"))));
         }
         return listOfDates;
     }
+
 
 
 

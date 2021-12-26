@@ -1,3 +1,4 @@
 # Project exclude paths
 /target/
 C:\Users\dloskutov\IdeaProjects\NewProject\logs.log
+/logs.log
